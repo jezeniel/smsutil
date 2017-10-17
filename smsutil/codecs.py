@@ -93,7 +93,7 @@ def search_gsm0338(encoding):
     return None
 
 
-def is_valid_gsm0338(text):
+def is_valid_gsm(text):
     ''' Validate if `text` is a valid gsm 03.338.  '''
     r = u'^[' + re.escape(GSM_CHARSET) + ']+$'
     return re.match(r, text, re.UNICODE) is not None

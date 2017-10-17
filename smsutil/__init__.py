@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
-from collections import namedtuple
-from .codecs import is_valid_gsm0338, GSM_EXT_CHARSET
+from .codecs import is_valid_gsm, GSM_EXT_CHARSET
+
+__version__ = '1.0.0'
 
 
 class SplitResult:
@@ -28,7 +29,7 @@ def encode(text):
     '''Encodes text.
     Checks if text is a valid `gsm0338` the uses `utf_16_be` if not.
     '''
-    if is_valid_gsm0338(text):
+    if is_valid_gsm(text):
         encoding = 'gsm0338'
     else:
         encoding = 'utf_16_be'
@@ -41,7 +42,7 @@ def decode(bytestring, encoding='gsm0338'):
 
 def gsm_split(text):
     ''' Split gsm 03.38 text. '''
-    if not is_valid_gsm0338(text):
+    if not is_valid_gsm(text):
         raise ValueError('text is not a valid gsm0338 value.')
 
     SINGLE_PART_BYTES = 160
@@ -123,8 +124,8 @@ def unicode_split(text):
     return result
 
 
-def sms_split(text):
-    if is_valid_gsm0338(text):
+def split(text):
+    if is_valid_gsm(text):
         return gsm_split(text)
     else:
         return unicode_split(text)
