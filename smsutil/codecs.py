@@ -95,8 +95,8 @@ def search_gsm0338(encoding):
 
 def is_valid_gsm0338(text):
     ''' Validate if `text` is a valid gsm 03.338.  '''
-    r = r'^[' + GSM_CHARSET + ']+$'
-    return re.match(r, text) is not None
+    r = u'^[' + re.escape(GSM_CHARSET) + ']+$'
+    return re.match(r, text, re.UNICODE) is not None
 
 
 codecs.register(search_gsm0338)

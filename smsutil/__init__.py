@@ -3,11 +3,25 @@ from collections import namedtuple
 from .codecs import is_valid_gsm0338, GSM_EXT_CHARSET
 
 
+class SplitResult:
+    def __init__(self, parts=[], total_bytes=0, total_length=0, encoding=None):
+        self.encoding = encoding
+        self.parts = parts
+        self.total_bytes = total_bytes
+        self.total_length = total_length
+
+    def __repr__(self):
+        return '<SplitResult {}>'.format(self.parts)
+
+
 class Part:
     def __init__(self, content, bytes=0, length=0):
         self.content = content
         self.bytes = bytes
         self.length = length
+
+    def __repr__(self):
+        return '<Part "{}">'.format(self.content)
 
 
 def encode(text):
@@ -60,7 +74,12 @@ def gsm_split(text):
         total_bytes += bytes
     if total_bytes <= SINGLE_PART_BYTES:
         parts = [Part(text, total_bytes, len(text))]
-    return parts
+
+    result = SplitResult(
+        encoding='gsm0338', parts=parts, total_bytes=total_bytes,
+        total_length=len(text)
+    )
+    return result
 
 
 def unicode_split(text):
@@ -96,4 +115,16 @@ def unicode_split(text):
         total_bytes += bytes
     if total_bytes <= SINGLE_PART_BYTES:
         parts = [Part(text, total_bytes, len(text))]
-    return parts
+
+    result = SplitResult(
+        encoding='utf_16_be', parts=parts,
+        total_bytes=total_bytes, total_length=len(text)
+    )
+    return result
+
+
+def sms_split(text):
+    if is_valid_gsm0338(text):
+        return gsm_split(text)
+    else:
+        return unicode_split(text)

@@ -21,7 +21,7 @@ class TestGsmSplit:
 
     def test_one_part(self):
         text = '1' * 160
-        parts = smsutil.gsm_split(text)
+        parts = smsutil.gsm_split(text).parts
         assert len(parts) == 1
         assert len(parts[0].content) == parts[0].length
         assert parts[0].length == 160
@@ -30,7 +30,7 @@ class TestGsmSplit:
 
     def test_two_part(self):
         text = '1' * 160 + '2' * 10
-        parts = smsutil.gsm_split(text)
+        parts = smsutil.gsm_split(text).parts
         assert len(parts) == 2
         assert len(parts[0].content) == parts[0].length
         assert parts[0].content == text[0:153]
@@ -42,7 +42,7 @@ class TestGsmSplit:
 
     def test_basic_and_ext(self):
         text = '1' * 145 + '{' * 15
-        parts = smsutil.gsm_split(text)
+        parts = smsutil.gsm_split(text).parts
         assert len(parts) == 2
         assert len(parts[0].content) == parts[0].length
         assert parts[0].length == 149
@@ -61,7 +61,7 @@ class TestGsmSplit:
             '111111111111111111111111111111111111111111111111'
             '11111111{111111111111'
         )
-        parts = smsutil.gsm_split(text)
+        parts = smsutil.gsm_split(text).parts
         assert len(parts) == 2
         assert len(parts[0].content) == parts[0].length
         assert parts[0].length == 152
@@ -76,17 +76,17 @@ class TestGsmSplit:
 
 class TestUnicodeSplit:
     def test_non_pair_detection(self):
-        parts = smsutil.unicode_split('ち')
+        parts = smsutil.unicode_split('ち').parts
         assert len(parts) == 1
         assert parts[0].bytes == 2
 
     def test_pair_detection(self):
-        parts = smsutil.unicode_split('🍔')  # hamburger emoji
+        parts = smsutil.unicode_split('🍔').parts  # hamburger emoji
         assert len(parts) == 1
         assert parts[0].bytes == 4
 
     def test_pair_detection_multipart(self):
-        parts = smsutil.unicode_split('🍔' * 80)  # hamburger emoji
+        parts = smsutil.unicode_split('🍔' * 80).parts  # hamburger emoji
         assert len(parts) == 3
         assert parts[0].bytes == 132
         assert parts[1].bytes == 132
@@ -98,7 +98,7 @@ class TestUnicodeSplit:
 
     def test_one_part(self):
         text = 'ち' * 70
-        parts = smsutil.unicode_split(text)
+        parts = smsutil.unicode_split(text).parts
         assert len(parts) == 1
         assert len(parts[0].content) == parts[0].length
         assert parts[0].length == 70
@@ -107,7 +107,7 @@ class TestUnicodeSplit:
 
     def test_two_part(self):
         text = 'ち' * 70 + 'は' * 10
-        parts = smsutil.unicode_split(text)
+        parts = smsutil.unicode_split(text).parts
         assert len(parts) == 2
         assert len(parts[0].content) == parts[0].length
         assert parts[0].length == 67
@@ -125,7 +125,7 @@ class TestUnicodeSplit:
             'ちちちちちちちちちちちちちちちちちちちちちちちちちち'
             'ちちちちちちちちちちちちちちはちちちち'
         )
-        parts = smsutil.unicode_split(text)
+        parts = smsutil.unicode_split(text).parts
         assert len(parts) == 2
         assert len(parts[0].content) == parts[0].length
         assert parts[0].length == 67
