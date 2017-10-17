@@ -1,6 +1,6 @@
 from __future__ import absolute_import, unicode_literals
-from  collections import namedtuple
-from .codecs import is_valid_gsm0338, GSM_BASIC_CHARSET, GSM_EXT_CHARSET
+from collections import namedtuple
+from .codecs import is_valid_gsm0338, GSM_EXT_CHARSET
 
 
 Part = namedtuple('Part', ['content', 'bytes', 'length'])
@@ -24,39 +24,32 @@ def gsm_split(text):
 
     parts = []
     total_bytes = 0
-    total_length = len(text)
 
     message = ''
     bytes = 0
     for char in text:
+        char_byte = 1
         message += char
         bytes += 1
-        extended = False
         if char in GSM_EXT_CHARSET:
             bytes += 1
-            extended = True
+            char_byte += 1
         if bytes > MULTI_PART_BYTES:
             # remove added bytes and don't include current char
-            bytes -= 1
-            if extended:
-                bytes -= 1
+            bytes -= char_byte
             parts.append(Part(message[:-1], bytes, len(message) - 1))
-            message = char
             total_bytes += bytes
-            bytes = 1
-            if extended:
-                bytes += 1
+
+            # move current char to the next part
+            message = char
+            bytes = char_byte
     if message:
         parts.append(Part(message, bytes, len(message)))
         total_bytes += bytes
     if total_bytes <= SINGLE_PART_BYTES:
-        parts = [Part(text, total_bytes, total_length)]
+        parts = [Part(text, total_bytes, len(text))]
     return parts
 
 
 def unicode_split():
     pass
-
-
-def split(text):
-    bstring = encode(text)
