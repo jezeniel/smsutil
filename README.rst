@@ -1,5 +1,7 @@
 smsutil - encode, decode and split SMS
 ======================================
+.. image:: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg 
+   :target: https://saythanks.io/to/jezeniel
 
 Simple set of utility functions for encoding, decoding and splitting
 sms messages. Shift tables is currently not supported.
