@@ -128,8 +128,8 @@ def unicode_split(text, multi_part_bytes=UNICODE_MULTI_PART_BYTES,
     return result
 
 
-def split(text):
+def split(text, *args, **kwargs):
     if is_valid_gsm(text):
-        return gsm_split(text)
+        return gsm_split(text, *args, **kwargs)
     else:
-        return unicode_split(text)
+        return unicode_split(text, *args, **kwargs)
