@@ -1,7 +1,6 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from .codecs import is_valid_gsm, GSM_EXT_CHARSET
-
-__version__ = '1.0.0'
 
 
 class SplitResult:
@@ -12,7 +11,7 @@ class SplitResult:
         self.total_length = total_length
 
     def __repr__(self):
-        return '<SplitResult {}>'.format(self.parts)
+        return '<SplitResult {!r}>'.format(self.parts)
 
 
 class Part:
@@ -22,7 +21,7 @@ class Part:
         self.length = length
 
     def __repr__(self):
-        return '<Part "{}">'.format(self.content)
+        return '<Part "{!r}">'.format(self.content)
 
 
 def encode(text):

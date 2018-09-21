@@ -136,3 +136,11 @@ class TestUnicodeSplit:
         assert parts[1].length == 4
         assert parts[1].content == text[67:]
         assert parts[1].bytes == 8
+
+    def test_repr(self):
+        """ printing should not raise UnicodeEncodeError """
+        try:
+            sms = smsutil.split(u'最高でした 🍔')
+            print(sms)
+        except UnicodeEncodeError:
+            pytest.fail("UnicodeEncodeError should not be raised.")

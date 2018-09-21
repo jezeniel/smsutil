@@ -1,8 +1,16 @@
+import os
+
 from setuptools import setup
-from smsutil.__version__ import VERSION
+
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
+
+about = {}
+with open(os.path.join(BASE_DIR, 'smsutil', '__version__.py')) as f:
+    exec(f.read(), about)
 
 
 requirements = [
@@ -19,7 +27,7 @@ setup_requirements = [
 
 setup(
     name='smsutil',
-    version=VERSION,
+    version=about['__version__'],
     description='encode, decode and split SMS.',
     long_description=readme,
     author='Jezeniel Zapanta',
@@ -29,7 +37,7 @@ setup(
     packages=['smsutil'],
     keywords='sms utils utilities smsutil short message service',
     install_requires=requirements,
-    # test_requires=test_requirements,
+    tests_require=test_requirements,
     setup_requires=setup_requirements,
     classifiers=[
         'Intended Audience :: Developers',
