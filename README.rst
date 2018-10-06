@@ -49,7 +49,7 @@ Example for encoding and decoding:
   sms = smsutil.split('[the quick brown fox]')
   len(sms.parts)  # 1
   sms.encoding  # 'gsm0338'
-  sms.parts[0].content  # 'the quick brown fox.'
+  sms.parts[0].content  # '[the quick brown fox]'
   sms.parts[0].length  # 21
   sms.parts[0].bytes  # 23
 
