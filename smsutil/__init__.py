@@ -2,6 +2,12 @@
 from __future__ import absolute_import, unicode_literals
 from .codecs import is_valid_gsm, GSM_EXT_CHARSET
 
+GSM_SINGLE_PART_BYTES = 160
+GSM_MULTI_PART_BYTES = 153
+
+UNICODE_SINGLE_PART_BYTES = 140
+UNICODE_MULTI_PART_BYTES = 134
+
 
 class SplitResult:
     def __init__(self, parts=[], total_bytes=0, total_length=0, encoding=None):
@@ -39,13 +45,12 @@ def decode(bytestring, encoding='gsm0338'):
     return bytestring.decode(encoding)
 
 
-def gsm_split(text):
+def gsm_split(text, multi_part_bytes=GSM_MULTI_PART_BYTES,
+              single_part_bytes=GSM_SINGLE_PART_BYTES):
     ''' Split gsm 03.38 text. '''
     if not is_valid_gsm(text):
         raise ValueError('text is not a valid gsm0338 value.')
 
-    SINGLE_PART_BYTES = 160
-    MULTI_PART_BYTES = 153
     BYTES_PER_CHAR = 1
 
     parts = []
@@ -60,7 +65,7 @@ def gsm_split(text):
         if char in GSM_EXT_CHARSET:
             bytes += BYTES_PER_CHAR
             char_byte += BYTES_PER_CHAR
-        if bytes > MULTI_PART_BYTES:
+        if bytes > multi_part_bytes:
             # remove added bytes and don't include current char
             bytes -= char_byte
             parts.append(Part(message[:-1], bytes, len(message) - 1))
@@ -72,7 +77,7 @@ def gsm_split(text):
     if message:
         parts.append(Part(message, bytes, len(message)))
         total_bytes += bytes
-    if total_bytes <= SINGLE_PART_BYTES:
+    if total_bytes <= single_part_bytes:
         parts = [Part(text, total_bytes, len(text))]
 
     result = SplitResult(
@@ -82,10 +87,9 @@ def gsm_split(text):
     return result
 
 
-def unicode_split(text):
+def unicode_split(text, multi_part_bytes=UNICODE_MULTI_PART_BYTES,
+                  single_part_bytes=UNICODE_SINGLE_PART_BYTES):
     ''' Split ucs2/utf-16 text. '''
-    SINGLE_PART_BYTES = 140
-    MULTI_PART_BYTES = 134
     BYTES_PER_CHAR = 2
 
     parts = []
@@ -101,7 +105,7 @@ def unicode_split(text):
         if ord(char) >= 0x10000 and ord(char) <= 0x10ffff:
             bytes += BYTES_PER_CHAR
             char_byte += BYTES_PER_CHAR
-        if bytes > MULTI_PART_BYTES:
+        if bytes > multi_part_bytes:
             # remove added bytes and don't include current char
             bytes -= char_byte
             parts.append(Part(message[:-1], bytes, len(message) - 1))
@@ -113,7 +117,7 @@ def unicode_split(text):
     if message:
         parts.append(Part(message, bytes, len(message)))
         total_bytes += bytes
-    if total_bytes <= SINGLE_PART_BYTES:
+    if total_bytes <= single_part_bytes:
         parts = [Part(text, total_bytes, len(text))]
 
     result = SplitResult(
@@ -123,8 +127,8 @@ def unicode_split(text):
     return result
 
 
-def split(text):
+def split(text, *args, **kwargs):
     if is_valid_gsm(text):
-        return gsm_split(text)
+        return gsm_split(text, *args, **kwargs)
     else:
-        return unicode_split(text)
+        return unicode_split(text, *args, **kwargs)
