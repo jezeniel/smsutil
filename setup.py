@@ -1,15 +1,16 @@
 import os
+import io
 
 from setuptools import setup
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-with open('README.rst') as readme_file:
+with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
 about = {}
-with open(os.path.join(BASE_DIR, 'smsutil', '__version__.py')) as f:
+with io.open(os.path.join(BASE_DIR, 'smsutil', '__version__.py'), 'r', encoding='utf-8') as f:
     exec(f.read(), about)
 
 
