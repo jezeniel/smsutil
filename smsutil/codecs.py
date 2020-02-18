@@ -21,7 +21,7 @@ basic_pairs = dict(zip(
 
 ext_pairs = dict(zip(
     [bytes([ord('\x1b'), ord(c)])
-     for c in '\x0a\x14\x28\x29\x2f\x3c\x3d\x3d\x40\x65'],
+     for c in '\x0a\x14\x28\x29\x2f\x3c\x3d\x3e\x40\x65'],
     [ord(c) for c in GSM_EXT_CHARSET]
 ))
 
