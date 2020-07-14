@@ -15,7 +15,7 @@ with io.open(os.path.join(BASE_DIR, 'smsutil', '__version__.py'), 'r', encoding=
 
 
 requirements = [
-    'future==0.16.0'
+    'future>=0.16.0'
 ]
 
 test_requirements = [
