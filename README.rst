@@ -63,6 +63,12 @@ Example for encoding and decoding:
   sms.parts[0].length  # 7
   sms.parts[0].bytes  # 16
 
+  smsutil.text_to_gsm('|最Som€高でした 	Text	🍔!') # |Som€ Text!
+  smsutil.text_to_gsm('|最Som€高でした 	Text	🍔!', True) # Som Text!
+
+  smsutil.count_non_gsm_characters('|最Som€高でした 	Text	🍔!') # 7
+  smsutil.count_non_gsm_characters('|最Som€高でした 	Text	🍔!', True) # 5
+
 smsutil is just using python's builtin codecs for UCS2/UTF-16.
 
 

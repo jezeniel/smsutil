@@ -6,7 +6,6 @@ import re
 
 from builtins import bytes
 
-
 GSM_BASIC_CHARSET = (
     u'@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞ\x1bÆæßÉ !"#¤%&\'()*+,-./0123456789:;<=>?¡'
     u'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà')
@@ -98,6 +97,18 @@ def is_valid_gsm(text):
     ''' Validate if `text` is a valid gsm 03.338.  '''
     r = u'^[' + re.escape(GSM_CHARSET) + ']+$'
     return re.match(r, text, re.UNICODE) is not None
+
+
+def text_to_gsm(text, basic_gsm=False):
+    ''' Remove all non-gsm 03.338 characters '''
+    charset = GSM_CHARSET if not basic_gsm else GSM_BASIC_CHARSET
+    return re.sub(u'[^' + re.escape(charset) + ']+', '', text, re.UNICODE)
+
+
+def count_non_gsm_characters(text, basic_gsm=False):
+    ''' Count all non-gsm 03.338 characters '''
+    charset = GSM_CHARSET if not basic_gsm else GSM_BASIC_CHARSET
+    return len(re.findall(u'[' + re.escape(charset) + ']', text, re.UNICODE))
 
 
 codecs.register(search_gsm0338)
