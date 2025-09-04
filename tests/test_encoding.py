@@ -1,6 +1,3 @@
-# -*- coding:  utf-8 -*-
-from __future__ import unicode_literals
-
 import unittest
 
 from smsutil.codecs import GSM_CHARSET, is_valid_gsm

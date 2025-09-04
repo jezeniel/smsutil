@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-from builtins import chr
 import codecs
 import re
-
-from builtins import bytes
 
 
 GSM_BASIC_CHARSET = (

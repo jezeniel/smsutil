@@ -14,9 +14,7 @@ with io.open(os.path.join(BASE_DIR, 'smsutil', '__version__.py'), 'r', encoding=
     exec(f.read(), about)
 
 
-requirements = [
-    'future>=0.16.0'
-]
+requirements = []
 
 test_requirements = [
     'pytest==4.6.*'

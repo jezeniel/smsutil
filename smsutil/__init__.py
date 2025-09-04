@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
 from .codecs import is_valid_gsm, GSM_EXT_CHARSET
 
 GSM_SINGLE_PART_BYTES = 160
